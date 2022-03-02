@@ -1,0 +1,16 @@
+{
+  // plugins告诉 Babel 要使用哪些插件，插件可以控制如何转换代码。
+  "plugins": [
+    //   [
+    //  // npm i -D babel-plugin-transform-runtime(这个是全名)
+    //     "transform-runtime",
+    //     {
+    //       "polyfill": false
+    //     }
+    //   ]
+    "@babel/proposal-class-properties",
+    "@babel/proposal-object-rest-spread"
+  ],
+  // 告诉 Babel 要转换的源码使用了哪些新的语法特性
+  "presets": ["@babel/react", "@babel/env", "@babel/typescript"]
+}
