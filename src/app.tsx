@@ -1,16 +1,22 @@
+/*
+ * @Author: your name
+ * @Date: 2022-02-21 17:18:17
+ * @LastEditTime: 2022-03-14 10:38:20
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \webpack-test\src\app.tsx
+ */
 import React, { Component, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import Hello from "./hello";
-import MouseTranks from "./hookDemo";
-import Button, { ButtonSize, ButtonType } from "./components/Button";
-
-// import { ButtonType } from "./components/Button";
+import Button from "./components/Button";
+import Menu, { MenuItem, SubMenu } from "./components/Menu";
+import Icon from "./components/Icon";
 
 const APP: React.FC = () => {
-  const [isShow, setIsShow] = useState(true);
   return (
     <div>
+      <Icon icon="angle-down" theme="primary" />
       <h1>App</h1>
       <ul>
         <li>
@@ -20,31 +26,30 @@ const APP: React.FC = () => {
           <Link to="/inbox">Inbox</Link>
         </li>
       </ul>
-      <Button btnType={ButtonType.Danger} disabled>传给button</Button>
-      <Button btnType={ButtonType.Link} href="http://www.baidu.com" disabled>
+      <Button btnType="danger" disabled size="lg">
+        传给button
+      </Button>
+      <Button btnType="link" href="http://www.baidu.com" name="link">
         link组件
       </Button>
-      {/* <button
-        onClick={() => {
-          isShow ? setIsShow(false) : setIsShow(true);
-        }}
-      >
-        展示MouseTranks
-      </button>
-      <Hello message="sada" />
-      {isShow && <MouseTranks></MouseTranks>} */}
+      <Menu defaultOpenSubmenu={[3]}>
+        {/* mode="vertical"*/}
+        <MenuItem>菜单1</MenuItem>
+        <MenuItem>菜单2</MenuItem>
+        <MenuItem>菜单3</MenuItem>
+        <SubMenu title="submenu1">
+          <MenuItem>菜单1</MenuItem>
+          <MenuItem>菜单2</MenuItem>
+        </SubMenu>
+        <SubMenu title="submenu2">
+          <MenuItem>菜单1</MenuItem>
+          <MenuItem>菜单2</MenuItem>
+        </SubMenu>
+        <MenuItem>菜单4</MenuItem>
+      </Menu>
+      <i className="fa-solid fa-user"></i>
     </div>
   );
 };
 
 export default APP;
-
-// // show.ts
-// // 操作 DOM 元素，把 content 显示到网页上
-// // 通过 ES6 模块规范导出 show 函数
-// // 给 show 函数增加类型检查
-// // import "./index.scss";
-
-// export default function APP(content: string) {
-//   window.document.getElementById("app").innerText = "Hello,TS" + content;
-// }

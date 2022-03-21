@@ -1,39 +1,52 @@
 /*
  * @Author: your name
  * @Date: 2022-02-28 16:32:14
- * @LastEditTime: 2022-03-02 10:32:20
+ * @LastEditTime: 2022-03-03 11:09:05
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \webpack-test\src\components\Button\button.tsx
  */
-import React, { FC, ButtonHTMLAttributes, AnchorHTMLAttributes } from "react";
+import React, { ButtonHTMLAttributes, AnchorHTMLAttributes } from "react";
 import classNames from "classnames";
 
-export enum ButtonSize {
-  Large = "lg",
-  Small = "sm",
-}
+// export enum ButtonSize {
+//   Large = "lg",
+//   Small = "sm",
+// }
 
-export enum ButtonType {
-  Primary = "primary",
-  Default = "default",
-  Danger = "danger",
-  Link = "link",
-}
+// export enum ButtonType {
+//   Primary = "primary",
+//   Default = "default",
+//   Danger = "danger",
+//   Link = "link",
+// }
 
-interface baseButtonProps {
+//通过字符串字面量类型简化枚举
+type ButtonSize = "lg" | "sm";
+type ButtonType = "primary" | "default" | "danger" | "link";
+
+interface BaseButtonProps {
   className?: string;
-  btnType?: string;
-  size?: string;
+  /**设置 Button 的类型 */
+  btnType?: ButtonType;
+  /**设置 Button 的大小 */
+  size?: ButtonSize;
+  /**设置 Button 的禁用 */
   disabled?: boolean;
   children: React.ReactNode;
+  /**设置 link类型的地址 */
   href?: string;
 }
 
-type NativeButtonProps = baseButtonProps & ButtonHTMLAttributes<HTMLElement>;
+// 继承button和a标签的原生属性
+type NativeButtonProps = BaseButtonProps & ButtonHTMLAttributes<HTMLElement>;
+type AnchorButtonProps = BaseButtonProps & AnchorHTMLAttributes<HTMLElement>;
+type ButtonProps = Partial<NativeButtonProps & AnchorButtonProps>;
 
-const Button: React.FC<buttonProps> = (props) => {
-  const { btnType, size, disabled, children, className, href } = props;
+// 此处导出是给storybook文档自动生成使用
+export const Button: React.FC<ButtonProps> = (props) => {
+  const { btnType, size, disabled, children, className, href, ...restProps } =
+    props;
   const classes = classNames("btn", {
     [`btn-${btnType}`]: btnType,
     [`btn-${size}`]: size,
@@ -42,13 +55,22 @@ const Button: React.FC<buttonProps> = (props) => {
   });
   if (btnType === "link" && href) {
     return (
-      <a className={classes} href={href}>
+      <a className={classes} href={href} {...restProps}>
         {children}
       </a>
     );
-  }else{
-    return <button className={classes} disabled={disabled}>{children}</button>
+  } else {
+    return (
+      <button className={classes} disabled={disabled} {...restProps}>
+        {children}
+      </button>
+    );
   }
-}
+};
+
+Button.defaultProps = {
+  btnType: "default",
+  disabled: false,
+};
 
 export default Button;

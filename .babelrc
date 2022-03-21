@@ -9,7 +9,8 @@
     //     }
     //   ]
     "@babel/proposal-class-properties",
-    "@babel/proposal-object-rest-spread"
+    "@babel/proposal-object-rest-spread",
+    "macros"   // 用于fontawesome
   ],
   // 告诉 Babel 要转换的源码使用了哪些新的语法特性
   "presets": ["@babel/react", "@babel/env", "@babel/typescript"]
