@@ -1,0 +1,19 @@
+{
+  "compilerOptions":{
+    "outDir": "dist",
+    "module": "esnext",
+    "target": "ES5",
+    "declaration": true,  // 为每一个js生成对应的*.d.tsx类型 文件
+    "jsx":"react",  // 使用react的api代替jsx
+    "moduleResolution": "Node",
+    "allowSyntheticDefaultImports": true,
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "src/**/*.test.tsx",  // 两个星代表任意长度
+    "src/**/*.stories.tsx",
+    "src/setupTests.ts",
+  ]
+}

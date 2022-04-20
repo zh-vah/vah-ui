@@ -1,20 +1,19 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
-import Menu from './menu'
-import MenuItem from './menuItem'
+import Menu from './index'
 
 export const defaultMenu = () => (
   <Menu defaultIndex='0' onSelect={(index) => {action(`clicked ${index} item`)}} >
-    <MenuItem>
-      cool link
-    </MenuItem>
-    <MenuItem disabled>
+    <Menu.Item>
+      cool lin
+    </Menu.Item>
+    <Menu.Item disabled>
       disabled
-    </MenuItem> 
-    <MenuItem>
+    </Menu.Item> 
+    <Menu.Item>
       cool link 2
-    </MenuItem> 
+    </Menu.Item> 
   </Menu>
 )
 

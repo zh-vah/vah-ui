@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-03-04 15:08:47
- * @LastEditTime: 2022-03-14 09:25:25
+ * @LastEditTime: 2022-04-17 10:21:26
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \webpack-test\src\components\Menu\menu.tsx
@@ -43,7 +43,7 @@ interface IMenuContext {
 export const MenuContext = createContext<IMenuContext>({ index: "0" });
 
 export const Menu: React.FC<MenuProps> = (props) => {
-  const { mode, defaultIndex, className, children, defaultOpenSubmenu, onSelect } = props;
+  const { mode, defaultIndex, className, children, defaultOpenSubmenu, onSelect, ...restProps } = props;
   const [currentActive, setActive] = useState(defaultIndex);
 
   const handleClick = (index: string) => {
@@ -82,7 +82,7 @@ export const Menu: React.FC<MenuProps> = (props) => {
   };
 
   return (
-    <ul className={classes} data-testid="test-menu">
+    <ul className={classes} data-testid="test-menu" {...restProps}>
       <MenuContext.Provider value={passedContext}>
         {rendererChildren()}
         {/* {children} */}

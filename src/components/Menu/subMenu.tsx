@@ -13,7 +13,7 @@ import classNames from "classnames";
 import { MenuContext } from "./menu";
 import Icon from "../Icon";
 
-interface SubMenuProps {
+export interface SubMenuProps {
   title: string;
   index?: string;
   disabled?: boolean;
@@ -71,8 +71,6 @@ const SubMenu: React.FC<SubMenuProps> = (props) => {
 
   // 判断渲染子元素
   const renderChildren = () => {
-    console.log(context.index, index, "index");
-
     const subMenuClasses = classNames("viking-submenu", {
       "menu-opened": menuOpened,
     });
