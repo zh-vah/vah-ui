@@ -101,7 +101,7 @@ class MyPromise {
 }
 
 /*
- *事例
+ * 实例
  */
 const promise1 = new MyPromise(function (resolve, reject) {
   console.log(2);
@@ -132,7 +132,3 @@ promise1.then(
     console.log("rejected:", reason);
   }
 );
-
-// console.log(test.then(), "test.then()");
-
-// console.log(MyPromise, "MyPromise", test.promiseState);
