@@ -1,9 +1,10 @@
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = {
-  entry: "./src/index.tsx",
+  entry: "./src/index2.tsx",
   output: {
     filename: "bundle.js",
-    path: path.resolve(__dirname, "./dist"),
+    path: path.resolve(__dirname, "./dist2"),
   },
   resolve: {
     // 先尝试 ts 后缀的 TypeScript 源码文件
@@ -28,6 +29,15 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      // 输出文件的文件名称，默认为index.html
+      filename: "inde.html",
+      // 本地模板文件的位置
+      template: "/index.html",
+      // excludeChunks: ['list', 'detail']
+    }),
+  ],
   devServer: {
     open: true,
     port: 3001,

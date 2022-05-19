@@ -14,6 +14,8 @@ import Menu from "./components/Menu";
 import Icon from "./components/Icon";
 import Input from "./components/Input";
 import AutoComplete from "./components/AutoComplete";
+import Col from "./components/Col";
+import Row from "./components/Row";
 
 // import './utils/bind&apply.js'
 // import './utils/new.js'
@@ -68,6 +70,8 @@ const APP: React.FC = () => {
       </>
     );
   };
+  const style = { background: "#0092ff", padding: "8px 0" };
+
   return (
     <div>
       <Icon icon="angle-down" theme="primary" />
@@ -87,8 +91,8 @@ const APP: React.FC = () => {
         link组件
       </Button>
       {/* <Menu defaultOpenSubmenu={[3]}> */}
-        {/* mode="vertical"*/}
-        {/* <Menu.Item>菜单1</Menu.Item>
+      {/* mode="vertical"*/}
+      {/* <Menu.Item>菜单1</Menu.Item>
         <Menu.Item>菜单2</Menu.Item>
         <Menu.Item>菜单3</Menu.Item>
         <Menu.SubMenu title="submenu1">
@@ -111,6 +115,34 @@ const APP: React.FC = () => {
         fetchSuggestions={handleFetch}
         renderOption={renderOption}
       ></AutoComplete>
+      <div style={{ width: "400px" }}>
+        <Row gutter={16} justify="center">
+          <Col className="gutter-row" span={6}>
+            <div style={style}>col-6</div>
+          </Col>
+          <Col className="gutter-row" span={6}>
+            <div style={style}>col-6</div>
+          </Col>
+          <Col className="gutter-row" span={6}>
+            <div style={style}>col-6</div>
+          </Col>
+          <Col className="gutter-row" span={6}>
+            <div style={style}>col-6</div>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={8}>
+            <div style={style}>col-8</div>
+          </Col>
+          <Col span={8} offset={8}>
+            <div style={style}>col-8</div>
+          </Col>
+        </Row>
+        <Row>
+          <Col flex={2}><div style={style}>2 / 5</div></Col>s
+          <Col flex={3}><div style={style}>3 / 5</div></Col>
+        </Row>
+      </div>
     </div>
   );
 };

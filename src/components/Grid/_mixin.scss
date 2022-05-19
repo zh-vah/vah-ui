@@ -1,0 +1,33 @@
+$grid-columns : 24;
+
+@mixin loop-grid-columns($index) {
+  @if $index>0 {
+    @while $index>0 {
+      .ant-col-#{$index} {
+        display: block;
+        flex: 0 0 percentage(($index / $grid-columns));
+        max-width: percentage(($index / $grid-columns));
+      }
+
+      .ant-col-offset-#{$index} {
+        margin-left: percentage(($index / $grid-columns));
+      }
+      $index: $index - 1;
+    }
+  }@else {
+    .ant-col-#{$index} {
+      display: none;
+      flex: 0 0 percentage(($index / $grid-columns));
+      max-width: percentage(($index / $grid-columns));
+    }
+    .ant-col-offset-#{$index} {
+      margin-left: 0;
+    }
+  }
+
+}
+
+// .make-grid {
+//   @include loop-grid-columns($grid-columns);
+//   // .loop-grid-columns(@grid-columns, @class);
+// }
