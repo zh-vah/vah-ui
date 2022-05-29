@@ -9,8 +9,12 @@
 
   >.menu-item {
     padding: $menu-item-padding-y $menu-item-padding-x;
+    margin: 0 0 0px 43px;
     cursor: pointer;
     transition: $menu-transition;
+    a{
+      color: $body-color;
+    }
 
     &:hover,
     &:focus {
@@ -34,6 +38,8 @@
     position: relative;
 
     .submenu-title {
+      color: rgba(0, 0, 0, 0.85);
+      font-size: 0.85rem;
       display: inline-block;
       // margin-left: 5px;
       align-items: center;
@@ -58,6 +64,7 @@
       margin-right: 3px;
     }
   }
+
   .icon-arrow-transform {
     transition: transform .25s ease-in-out;
     transform: rotate(180deg);
@@ -68,7 +75,9 @@
     list-style: none;
     padding-left: 0;
     white-space: nowrap;
-
+    a{
+      color: $body-color;
+    }
     //transition: $menu-transition;
     .menu-item {
       padding: $menu-item-padding-y $menu-item-padding-x;
@@ -78,6 +87,11 @@
 
       &.is-active,
       &:hover {
+        color: $menu-item-active-color !important;
+      }
+
+      &.is-active > a,
+      &:hover > a{
         color: $menu-item-active-color !important;
       }
     }
@@ -107,7 +121,7 @@
 .menu-vertical {
   flex-direction: column;
   border-bottom: 0px;
-  margin: 10px 20px;
+  // margin: 10px 20px;
   border-right: $menu-border-width solid $menu-border-color;
 
   >.menu-item {

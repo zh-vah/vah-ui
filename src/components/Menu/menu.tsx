@@ -22,7 +22,7 @@ export interface MenuProps {
   className?: string;
   children?: React.ReactNode;
   /**默认展开 传true全部展开 传数组指定展开项 */
-  defaultOpenSubmenu?: Array<number>;
+  defaultOpenSubmenu?: Array<number> | boolean;
   /**点击菜单项触发的回掉函数 */
   onSelect?: (parmas) => void;
 }
@@ -32,7 +32,7 @@ interface IMenuContext {
   handleClick?: (selectedIndex: string) => void;
   mode?: menuMode;
   // 子菜单默认打开
-  defaultOpenSubmenu?: Array<number>;
+  defaultOpenSubmenu?: Array<number> | boolean;
 }
 // const handleClick = (index: string) => {
 //   setActive(index)
@@ -94,5 +94,6 @@ export const Menu: React.FC<MenuProps> = (props) => {
 Menu.defaultProps = {
   mode: "horizontal",
   defaultIndex: "00",
+  defaultOpenSubmenu: true
 };
 export default Menu;

@@ -16,6 +16,8 @@ import Input from "./components/Input";
 import AutoComplete from "./components/AutoComplete";
 import Col from "./components/Col";
 import Row from "./components/Row";
+import Progress from "./components/Progress";
+import Upload from "./components/Upload";
 
 // import './utils/bind&apply.js'
 // import './utils/new.js'
@@ -74,7 +76,14 @@ const APP: React.FC = () => {
 
   return (
     <div>
-      <Icon icon="angle-down" theme="primary" />
+      <Upload action='https://jsonplaceholder.typicode.com/posts/' childrenEle={<Icon icon="cloud-upload" size="2x" theme="success" />} accept='.doc'></Upload>
+      <Upload action="https://jsonplaceholder.typicode.com/posts/" drag={true} accept='.doc'>
+        <Icon icon="upload" size="5x" theme="secondary" />
+        <br />
+        <p>Drag file over to upload</p>
+      </Upload>
+      <Progress percent={40} strokeHeight={30} ></Progress>
+      <Icon icon="angle-down" theme="primary"/>
       <h1>App</h1>
       {/* <ul>
         <li>
@@ -87,12 +96,12 @@ const APP: React.FC = () => {
       <Button btnType="danger" disabled size="lg">
         传给button
       </Button>
-      <Button btnType="link" href="http://www.baidu.com" name="link">
+      <Button btnType="link" href="http://www.baidu.com" name="link" disabled>
         link组件
       </Button>
-      {/* <Menu defaultOpenSubmenu={[3]}> */}
+      <Menu defaultOpenSubmenu={[3]} mode="vertical">
       {/* mode="vertical"*/}
-      {/* <Menu.Item>菜单1</Menu.Item>
+      <Menu.Item>菜单1</Menu.Item>
         <Menu.Item>菜单2</Menu.Item>
         <Menu.Item>菜单3</Menu.Item>
         <Menu.SubMenu title="submenu1">
@@ -104,7 +113,7 @@ const APP: React.FC = () => {
           <Menu.Item>菜单2</Menu.Item>
         </Menu.SubMenu>
         <Menu.Item>菜单4</Menu.Item>
-      </Menu> */}
+      </Menu>
       <Input
         size="sm"
         prepend="sads"
@@ -114,6 +123,7 @@ const APP: React.FC = () => {
       <AutoComplete
         fetchSuggestions={handleFetch}
         renderOption={renderOption}
+        placeholder='please input'
       ></AutoComplete>
       <div style={{ width: "400px" }}>
         <Row gutter={16} justify="center">
@@ -139,7 +149,7 @@ const APP: React.FC = () => {
           </Col>
         </Row>
         <Row>
-          <Col flex={2}><div style={style}>2 / 5</div></Col>s
+          <Col flex={2}><div style={style}>2 / 5</div></Col>
           <Col flex={3}><div style={style}>3 / 5</div></Col>
         </Row>
       </div>

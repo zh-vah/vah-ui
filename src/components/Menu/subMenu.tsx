@@ -12,6 +12,7 @@ import classNames from "classnames";
 
 import { MenuContext } from "./menu";
 import Icon from "../Icon";
+import { array } from "yargs";
 
 export interface SubMenuProps {
   title: string;
@@ -23,9 +24,14 @@ export interface SubMenuProps {
 const SubMenu: React.FC<SubMenuProps> = (props) => {
   const { title, index, disabled, className, children } = props;
   const context = useContext(MenuContext);
+  let isOpen = false
+  if(context.defaultOpenSubmenu instanceof Array){
+    isOpen = context.defaultOpenSubmenu?.includes(Number(props.index[0]))
+  }else {
+    isOpen = context.defaultOpenSubmenu
+  }
   const [menuOpened, setMenuOpened] = useState(
-    context.mode === "vertical" &&
-      context.defaultOpenSubmenu?.includes(Number(props.index[0]))
+    context.mode === "vertical" && isOpen
   );
   const [iconChanged, setIconChanged] = useState(menuOpened)
 
@@ -97,7 +103,7 @@ const SubMenu: React.FC<SubMenuProps> = (props) => {
   return (
     <li className={classes} {...subMenuProps}>
       <Icon icon="angle-down" className={iconClasses} />
-      <div className="submenu-title">{title}</div>
+      <h4 className="submenu-title">{title}</h4>
       {renderChildren()}
     </li>
   );

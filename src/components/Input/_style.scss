@@ -50,7 +50,7 @@
   &::placeholder {
     color: $input-placeholder-color;
     // Override Firefox's unusual default opacity; see https://github.com/twbs/bootstrap/pull/11526.
-    opacity: 1;
+    opacity: 0.5;
   }
   &:disabled,
   &[readonly] {

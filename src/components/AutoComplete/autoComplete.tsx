@@ -12,7 +12,8 @@ import React, {
   KeyboardEvent,
   ReactElement,
   useEffect,
-  useRef
+  useRef,
+  InputHTMLAttributes
 } from "react";
 import classNames from "classnames";
 
@@ -25,7 +26,7 @@ interface DataSourceObject {
   value: string;
 }
 
-interface AutocompleteProps {
+interface AutocompleteProps extends InputHTMLAttributes<HTMLElement>{
   /**获取自动填充的数据源 */
   fetchSuggestions: (
     str?: string
@@ -122,7 +123,7 @@ useClickOutside(componentRef, () => { setFilteredData([])})
   // 渲染自动补全列表
   const generateDropdown = () => {
     return (
-      inputValue && (
+      inputValue && filteredData.length !== 0 && (
         <ul className="viking-suggestion-list">
           {filteredData.map((item, index) => {
             const cnames = classNames("suggestion-item", {

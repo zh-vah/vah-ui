@@ -54,6 +54,13 @@ export const Button: React.FC<ButtonProps> = (props) => {
     className,
   });
   if (btnType === "link" && href) {
+    if(disabled){
+      return (
+        <span className={classes}>
+          {children}
+        </span>
+      );
+    }
     return (
       <a className={classes} href={href} {...restProps}>
         {children}

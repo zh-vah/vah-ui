@@ -1,21 +1,19 @@
 /*
  * @Author: your name
- * @Date: 2022-05-03 17:00:32
- * @LastEditTime: 2022-05-03 17:00:32
- * @LastEditors: Please set LastEditors
- * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: /vah-ui/src/components/UpLoad/upload copy.tsx
- */
-/*
- * @Author: your name
  * @Date: 2022-04-20 08:48:44
- * @LastEditTime: 2022-05-03 17:00:26
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-08 12:42:59
+ * @LastEditors: vah 1991249027@qq.com
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /vah-ui/src/components/UpLoad/upload.tsx
  */
 
-import React, { ChangeEvent, useRef, useState, ReactElement } from "react";
+import React, {
+  ChangeEvent,
+  useRef,
+  useState,
+  ReactElement,
+  useEffect,
+} from "react";
 import ReactDOM from "react-dom";
 import axios from "axios";
 import Button from "../Button";
@@ -85,6 +83,17 @@ export const Upload: React.FC<UploadProps> = (props) => {
   } = props;
   const fileInput = useRef<HTMLInputElement>(null);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [videoUrl, setVideoUrl] = useState("");
+  useEffect(() => {
+    axios.get("http://localhost:8081/getVideo").then((res) => {
+      let blob = new Blob([res.data], { type: "wav/audio" });
+      const url = URL.createObjectURL(blob);
+      console.log(url, "urlurl");
+
+      setVideoUrl(url);
+    });
+  }, []);
+  // 更新文件列表
   const updateFileList = (
     updateFile: UploadFile,
     updateObj: Partial<UploadFile>
@@ -99,11 +108,13 @@ export const Upload: React.FC<UploadProps> = (props) => {
       });
     });
   };
+
   const handleClick = () => {
     if (fileInput.current) {
       fileInput.current.click();
     }
   };
+
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) {
@@ -114,7 +125,8 @@ export const Upload: React.FC<UploadProps> = (props) => {
       fileInput.current.value = "";
     }
   };
-  // 上传文件
+
+  // 上传文件处理
   const uploadFiles = (files: FileList) => {
     let postFiles = Array.from(files);
     postFiles.forEach((file) => {
@@ -133,13 +145,17 @@ export const Upload: React.FC<UploadProps> = (props) => {
     });
   };
 
-  const handleRemove = (file: UploadFile) => {
-    setFileList((prevList) => {
-      return prevList.filter((item) => item.uid !== file.uid);
-    });
-    if (onRemove) {
-      onRemove(file);
+  //  生成文件切片
+  const createFileChunk = (file) => {
+    const size = 10 * 1024 * 1024; // 切片大小
+    const chunkList = [];
+    let cur = 0;
+
+    while (cur < file.size) {
+      chunkList.push({ file: file.slice(cur, cur + size) });
+      cur += size;
     }
+    return chunkList;
   };
 
   // 文件上传请求
@@ -153,50 +169,116 @@ export const Upload: React.FC<UploadProps> = (props) => {
       raw: file,
     };
     setFileList([_file, ...fileList]);
-    const formData = new FormData();
-    formData.append(name ? name : "file", file);
-    
-    
-    if (data) {
-      for (let item in data) {
-        formData.append(item, data[item]);
-      }
-    }
-    axios
-      .post(action, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          ...headers,
-        },
-        onUploadProgress: (e) => {
-          let percentage = Math.round((e.loaded * 100) / e.total) || 0;
-          if (percentage < 100) {
-            updateFileList(_file, { percent: percentage, status: "uploading" });
-            if (onProgress) {
-              onProgress(percentage, file);
-            }
-          }
-        },
+
+    const chunkList = createFileChunk(file);
+
+    const filedata = chunkList.map(({ file }, index) => ({
+      chunk: file,
+      hash: _file.name + "-" + index, // 文件名 + 数组下标
+      index,
+    }));
+    console.log(filedata, "filedata");
+    // 分片文件上传进度数组
+    let percentageList = [];
+    let totalPercentage
+    const requestList = filedata
+      .map(({ chunk, hash, index }) => {
+        const formData = new FormData();
+        // formData.append(name ? name : "file", file);
+        formData.append("filename", file.name);
+        formData.append("chunk", chunk);
+        formData.append("hash", hash);
+        console.log(formData, "formData");
+
+        return { formData, hash, index };
       })
-      .then((resp) => {
-        updateFileList(_file, { status: "success", response: resp.data });
-        if (onSuccess) {
-          onSuccess(resp.data, file);
-        }
-        if (onChange) {
-          onChange(file);
-        }
+      .map(({ formData, hash, index }) => {
+        return axios.post(action, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            ...headers,
+          },
+          onUploadProgress: (e) => {
+            let percentage = Math.round((e.loaded * 100) / e.total) || 0;
+            percentageList[index] = percentage;
+            totalPercentage = percentageList.reduce((toPercentage, percentage) => {
+              return toPercentage + percentage
+            })/14
+            if (totalPercentage <= 100) {
+              updateFileList(_file, {
+                percent: totalPercentage,
+                status: "uploading",
+              });
+            }
+            console.log(totalPercentage, hash);
+          },
+        });
+      });
+    console.log(requestList, "requestList");
+
+    Promise.all(requestList)
+      .then((res) => {
+        updateFileList(_file, { status: "success", response: res });
+        console.log(res, "all res");
       })
       .catch((err) => {
-        updateFileList(_file, { status: "error", error: err });
-        if (onError) {
-          onError(err, file);
-        }
-        if (onChange) {
-          onChange(file);
-        }
+        console.log(err, "all err");
       });
+
+    // const formData = new FormData();
+    // formData.append(name ? name : "file", file);
+
+    // if (data) {
+    //   for (let item in data) {
+    //     formData.append(item, data[item]);
+    //   }
+    // }
+    // axios
+    //   .post(action, formData, {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //       ...headers,
+    //     },
+    //     onUploadProgress: (e) => {
+    //       let percentage = Math.round((e.loaded * 100) / e.total) || 0;
+    //       if (percentage < 100) {
+    //         updateFileList(_file, { percent: percentage, status: "uploading" });
+    //         if (onProgress) {
+    //           onProgress(percentage, file);
+    //         }
+    //       }
+    //     },
+    //   })
+    //   .then((resp) => {
+    //     updateFileList(_file, { status: "success", response: resp.data });
+    //     if (onSuccess) {
+    //       onSuccess(resp.data, file);
+    //     }
+    //     if (onChange) {
+    //       onChange(file);
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     updateFileList(_file, { status: "error", error: err });
+    //     if (onError) {
+    //       onError(err, file);
+    //     }
+    //     if (onChange) {
+    //       onChange(file);
+    //     }
+    //   });
   };
+
+  const handleRemove = (file: UploadFile) => {
+    setFileList((prevList) => {
+      return prevList.filter((item) => item.uid !== file.uid);
+    });
+    if (onRemove) {
+      onRemove(file);
+    }
+  };
+  console.log(videoUrl, "videoUrl");
+
   return (
     <div>
       {/* {childrenEle ? (
@@ -213,7 +295,9 @@ export const Upload: React.FC<UploadProps> = (props) => {
           onFile={(files) => {
             uploadFiles(files);
           }}
-        >{children}</Dragger>
+        >
+          {children}
+        </Dragger>
       ) : childrenEle ? (
         <div onClick={handleClick} style={{ cursor: "pointer" }}>
           {childrenEle}
@@ -235,6 +319,9 @@ export const Upload: React.FC<UploadProps> = (props) => {
         multiple={multiple}
       ></input>
       <UploadList fileList={fileList} onRemove={handleRemove} />
+      {/* <video controls width="320" height="240">
+        <source src={videoUrl} type="video/mp4" />
+      </video> */}
     </div>
   );
 };
