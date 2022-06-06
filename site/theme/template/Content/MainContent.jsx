@@ -17,11 +17,7 @@ export const MainContent = (props) => {
     <div className="main-wrapper">
       <Row>
         <Col className="main-menu" span={4}>
-          <Menu
-            defaultOpenSubmenu
-            defaultIndex="01"
-            mode="vertical"
-          >
+          <Menu defaultOpenSubmenu defaultIndex="01" mode="vertical">
             <Menu.SubMenu title="开发指南">
               <Menu.Item>
                 <Link to="/docs/introduce">介绍</Link>
@@ -29,7 +25,9 @@ export const MainContent = (props) => {
               <Menu.Item>
                 <Link to="/docs/install">安装</Link>
               </Menu.Item>
-              <Menu.Item><Link to="/docs/quickStart">快速开始</Link></Menu.Item>
+              <Menu.Item>
+                <Link to="/docs/quickStart">快速开始</Link>
+              </Menu.Item>
             </Menu.SubMenu>
             {/* <Menu.Item>
               <Link
@@ -41,12 +39,30 @@ export const MainContent = (props) => {
             <Menu.Item>菜单2</Menu.Item>
             <Menu.Item>菜单3</Menu.Item> */}
             <Menu.SubMenu title="组件">
-              <Menu.Item><Link
-                to='/components/Button'
-              >
-                按钮
-              </Link></Menu.Item>
-              <Menu.Item>菜单</Menu.Item>
+              <Menu.Item>
+                <Link to="/components/AutoComplete">AutoComplete 自动填充</Link>
+              </Menu.Item>
+              <Menu.Item>
+                <Link to="/components/Button">Button 按钮</Link>
+              </Menu.Item>
+              <Menu.Item>
+                <Link to="/components/Grid">Grid 栅格</Link>
+              </Menu.Item>
+              <Menu.Item>
+                <Link to="/components/Icon">Icon 图标</Link>
+              </Menu.Item>
+              <Menu.Item>
+                <Link to="/components/Input">Input 输入框</Link>
+              </Menu.Item>
+              <Menu.Item>
+                <Link to="/components/Menu">Menu 菜单</Link>
+              </Menu.Item>
+              <Menu.Item>
+                <Link to="/components/Progress">Progress 进度条</Link>
+              </Menu.Item>
+              <Menu.Item>
+                <Link to="/components/Upload">Upload 上传组件</Link>
+              </Menu.Item>
             </Menu.SubMenu>
             <Menu.SubMenu title="submenu2">
               <Menu.Item>菜单1</Menu.Item>
@@ -58,14 +74,11 @@ export const MainContent = (props) => {
         <Col className={mainContainerClass} span={20}>
           {/* <ComponentDoc {...props} doc={pageData} /> */}
           {/* <Article {...props} content={pageData} /> */}
-          {props.demos ? (
-            <ComponentDoc
-              {...props}
-              doc={pageData}
-            />
+          {props.pageData? (props.demos ? (
+            <ComponentDoc {...props} doc={pageData} />
           ) : (
             <Article {...props} content={pageData} />
-          )}
+          )): <h1>首页</h1>}
         </Col>
       </Row>
 
@@ -90,7 +103,7 @@ export const MainContent = (props) => {
 };
 
 export default collect(async (nextProps) => {
-  console.log(nextProps, nextProps.data, '...pageDataPath, demo');
+  console.log(nextProps, nextProps.data, "...pageDataPath, demo");
   if (!nextProps.pageData) {
     throw 404;
   }

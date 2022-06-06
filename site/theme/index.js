@@ -8,7 +8,7 @@ module.exports = {
   //   // }
   //   return nodePath.endsWith('/demo');
   // },
-  lazyLoad:false,
+  lazyLoad: false,
   pick: {
     posts(markdownData) {
       return {
@@ -33,11 +33,11 @@ module.exports = {
     // },
   },
   plugins: [
-    'bisheng-plugin-description',
-    'bisheng-plugin-toc?maxDepth=2&keepElem',
+    "bisheng-plugin-description",
+    "bisheng-plugin-toc?maxDepth=2&keepElem",
     // 'bisheng-plugin-hzero-ui',
-    '@ant-design/bisheng-plugin',
-    'bisheng-plugin-react?lang=__react',
+    "@ant-design/bisheng-plugin",
+    "bisheng-plugin-react?lang=__react",
   ],
   routes: [
     {
@@ -45,19 +45,19 @@ module.exports = {
       component: "./template/Layout",
       childRoutes: [
         {
-          path: '/components',
-          component: './template/Content',
+          path: "/components",
+          component: "./template/Content",
         },
         {
-          path: '/components/:children',
-          dataPath: '/:children/index',
-          component: './template/Content',
+          path: "/components/:children",
+          dataPath: "/:children/index",
+          component: "./template/Content",
         },
         {
-          path: '/docs/:children',
-          dataPath: '/:children',
-          component: './template/Content',
-        }
+          path: "/docs/:children",
+          dataPath: "/:children",
+          component: "./template/Content",
+        },
       ],
     },
   ],

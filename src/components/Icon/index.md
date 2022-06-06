@@ -7,28 +7,24 @@ toc: false
 ---
 
 
-语义化的矢量图形。
-
-## 图标的命名规范
-
-我们为每个图标赋予了语义化的命名，命名规则如下:
-
-- 实心和描线图标保持同名，用 `-o` 来区分，比如 `question-circle`（实心） 和 `question-circle-o`（描线）；
-- 命名顺序：`[图标名]-[形状?]-[描线?]-[方向?]`。
-
-> `?` 为可选。
+语义化的矢量图形。vah-ui使用的是开源的[FortAwesome](https://github.com/FortAwesome/react-fontawesome)组件库。
 
 ## 如何使用
 
 使用 `<Icon />` 标签声明组件，指定图标对应的 type 属性，示例代码如下:
 
-```html
-<Icon type="link" />
+首先需要引入。
+```js
+import { value library } from "@fortawesome/fontawesome-svg-core";
+import { value fas } from "@fortawesome/free-solid-svg-icons";
+library.add(fas);
 ```
 
-## 本地部署
-
-图标默认托管在 [iconfont.cn](http://iconfont.cn)，默认公网可访问。如需本地部署，可参考 [示例](https://github.com/ant-design/antd-init/tree/master/examples/local-iconfont)。
+然后就可以在页面中使用了。
+```html
+<Icon icon="angle-double-down" />
+```
+其它具体的使用方法请到[FortAwesome使用文档](https://fontawesome.com/v6/docs/web/use-with/react/)中查看
 
 ## 图标列表
 
@@ -39,6 +35,27 @@ toc: false
 ```__react
 import IconSet from '../../../site/theme/IconSet';
 ReactDOM.render(<IconSet className="icons" catigory="direction" />, mountNode);
+```
+
+### 交通运输图标
+
+```__react
+import IconSet from '../../../site/theme/IconSet';
+ReactDOM.render(<IconSet className="icons" catigory="transport" />, mountNode);
+```
+
+### 文件类型图标
+
+```__react
+import IconSet from '../../../site/theme/IconSet';
+ReactDOM.render(<IconSet className="icons" catigory="fileType" />, mountNode);
+```
+
+### 辅助功能图标
+
+```__react
+import IconSet from '../../../site/theme/IconSet';
+ReactDOM.render(<IconSet className="icons" catigory="accessibility" />, mountNode);
 ```
 
 ### 提示建议性图标
@@ -53,13 +70,6 @@ ReactDOM.render(<IconSet className="icons" catigory="suggestion" />, mountNode);
 ```__react
 import IconSet from '../../../site/theme/IconSet';
 ReactDOM.render(<IconSet className="icons" catigory="other" />, mountNode);
-```
-
-### 品牌和标识
-
-```__react
-import IconSet from '../../../site/theme/IconSet';
-ReactDOM.render(<IconSet className="icons" catigory="logo" />, mountNode);
 ```
 
 ## API
